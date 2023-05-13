@@ -10,6 +10,8 @@ function onStartClick() {
     }, 1000);
     start.disabled = true;
     stop.disabled = false;
+
+    return timerId;
 }
 
 function onStopClick() {
