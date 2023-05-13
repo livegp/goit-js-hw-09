@@ -5,13 +5,14 @@ start.addEventListener('click', onStartClick);
 stop.addEventListener('click', onStopClick);
 
 function onStartClick() {
+    clearInterval(timerId);
     timerId = setInterval(() => {
         document.body.style.backgroundColor = getRandomHexColor();
     }, 1000);
+
     start.disabled = true;
     stop.disabled = false;
 
-    return timerId;
 }
 
 function onStopClick() {
