@@ -20,24 +20,16 @@ const options = {
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-        console.log(selectedDates[0]);
+        if (selectedDates[0] < options.defaultDate) {
+            refs.startBtn.disabled = true;
+            Notiflix.Notify.failure('Please choose a date in the future');
+        } else {
+            refs.startBtn.disabled = false;
+        }
     },
 };
 
 flatpickr(refs.input, options);
-
-const notiflix = new Notiflix({
-    width: '280px',
-    position: 'center-center',
-    fontSize: '20px',
-    fontFamily: 'Arial',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    borderRadius: '10px',
-    color: '#fff',
-    messageMaxLength: '100',
-    message: 'Please choose a date in the future',
-    timeout: 3000,
-});
 
 function convertMs(ms) {
     const second = 1000;
@@ -51,11 +43,4 @@ function convertMs(ms) {
     const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
     return { days, hours, minutes, seconds };
-}
-
-function updateClockface(time) {
-    refs.days.textContent = time.days;
-    refs.hours.textContent = time.hours;
-    refs.minutes.textContent = time.minutes;
-    refs.seconds.textContent = time.seconds;
 }
