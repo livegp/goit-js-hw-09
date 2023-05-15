@@ -47,17 +47,17 @@ function convertMs(ms) {
     return { days, hours, minutes, seconds };
 }
 
-function formatTime(time) {
+function addLeadingZero(time) {
     return time.toString().padStart(2, '0');
 }
 
 function updateCountdown(ms) {
     const { days, hours, minutes, seconds } = convertMs(ms);
 
-    daysValue.textContent = formatTime(days);
-    hoursValue.textContent = formatTime(hours);
-    minutesValue.textContent = formatTime(minutes);
-    secondsValue.textContent = formatTime(seconds);
+    daysValue.textContent = addLeadingZero(days);
+    hoursValue.textContent = addLeadingZero(hours);
+    minutesValue.textContent = addLeadingZero(minutes);
+    secondsValue.textContent = addLeadingZero(seconds);
 }
 
 function stopCountdown() {
