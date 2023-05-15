@@ -2,17 +2,15 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
-const refs = {
-    startBtn: document.querySelector('[data-start]'),
-    days: document.querySelector('[data-days]'),
-    hours: document.querySelector('[data-hours]'),
-    minutes: document.querySelector('[data-minutes]'),
-    seconds: document.querySelector('[data-seconds]'),
-    timer: document.querySelector('.timer'),
-    input: document.getElementById('datetime-picker'),
-};
+const startBtn = document.querySelector('[data-start]');
+const timer = document.querySelector('.timer');
+const daysValue = timer.querySelector('[data-days]');
+const hoursValue = timer.querySelector('[data-hours]');
+const minutesValue = timer.querySelector('[data-minutes]');
+const secondsValue = timer.querySelector('[data-seconds]');
+const input = document.getElementById('datetime-picker');
 
-refs.startBtn.disabled = true;
+startBtn.disabled = true;
 
 const options = {
     enableTime: true,
@@ -21,15 +19,19 @@ const options = {
     minuteIncrement: 1,
     onClose(selectedDates) {
         if (selectedDates[0] < options.defaultDate) {
-            refs.startBtn.disabled = true;
             Notiflix.Notify.failure('Please choose a date in the future');
+            startBtn.disabled = true;
         } else {
-            refs.startBtn.disabled = false;
+            startBtn.disabled = false;
         }
     },
 };
 
-flatpickr(refs.input, options);
+flatpickr('#datetime-picker', options);
+
+let countdownTimer = null;
+
+startBtn.addEventListener('click', startCountdown);
 
 function convertMs(ms) {
     const second = 1000;
@@ -43,4 +45,40 @@ function convertMs(ms) {
     const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
     return { days, hours, minutes, seconds };
+}
+
+function formatTime(time) {
+    return time.toString().padStart(2, '0');
+}
+
+function updateCountdown(ms) {
+    const { days, hours, minutes, seconds } = convertMs(ms);
+
+    daysValue.textContent = formatTime(days);
+    hoursValue.textContent = formatTime(hours);
+    minutesValue.textContent = formatTime(minutes);
+    secondsValue.textContent = formatTime(seconds);
+}
+
+function stopCountdown() {
+    clearInterval(countdownTimer);
+}
+
+function startCountdown() {
+    const selectedDate = flatpickr.parseDate(input.value);
+
+    countdownTimer = setInterval(() => {
+        const ms = selectedDate - new Date();
+
+        if (ms <= 0) {
+            stopCountdown();
+            timer.classList.add('timer--finished');
+            Notiflix.Notify.info('Countdown finished!');
+            return;
+        }
+
+        updateCountdown(ms);
+    }, 1000);
+
+    Notiflix.Notify.success('Countdown started!');
 }
