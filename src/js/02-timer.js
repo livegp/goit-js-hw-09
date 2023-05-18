@@ -62,11 +62,11 @@ function updateCountdown(ms) {
 
 function stopCountdown() {
     clearInterval(countdownTimer);
+    startBtn.disabled = true;
 }
 
 function startCountdown() {
     const selectedDate = flatpickr.parseDate(input.value);
-    startBtn.disabled = true;
     countdownTimer = setInterval(() => {
         const ms = selectedDate - new Date();
 
