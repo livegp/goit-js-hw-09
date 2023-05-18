@@ -67,18 +67,17 @@ function stopCountdown() {
 }
 
 function startCountdown() {
-    const selectedDate = flatpickr.parseDate(input.value);
-    countdownTimer = setInterval(() => {
-        const ms = selectedDate - new Date();
+  const selectedDate = new Date(input.value);
+  countdownTimer = setInterval(() => {
+    const ms = selectedDate - new Date();
+    if (ms <= 0) {
+      stopCountdown();
+      return;
+    }
 
-        if (ms <= 0) {
-            stopCountdown();
-            return;
-        }
+    updateCountdown(ms);
+  }, 1000);
 
-        updateCountdown(ms);
-    }, 1000);
-
-    Notiflix.Notify.success('Countdown started!');
-    startBtn.disabled = true;
+  Notiflix.Notify.success('Countdown started!');
+  startBtn.disabled = true;
 }
