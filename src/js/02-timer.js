@@ -60,14 +60,19 @@ function updateCountdown(ms) {
     secondsValue.textContent = addLeadingZero(seconds);
 }
 
+function stopCountdown() {
+    clearInterval(countdownTimer);
+    Notiflix.Notify.info('Countdown finished!');
+    startBtn.disabled = false;
+}
+
 function startCountdown() {
     const selectedDate = flatpickr.parseDate(input.value);
     countdownTimer = setInterval(() => {
         const ms = selectedDate - new Date();
 
         if (ms <= 0) {
-            clearInterval(countdownTimer);
-            Notiflix.Notify.info('Countdown finished!');
+            stopCountdown();
             return;
         }
 
