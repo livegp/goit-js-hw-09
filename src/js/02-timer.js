@@ -64,6 +64,7 @@ function stopCountdown() {
     clearInterval(countdownTimer);
     Notiflix.Notify.info('Countdown finished!');
     startBtn.disabled = false;
+    input.disabled = false;
 }
 
 function startCountdown() {
@@ -80,4 +81,5 @@ function startCountdown() {
 
     Notiflix.Notify.success('Countdown started!');
     startBtn.disabled = true;
+    input.disabled = true;
 }
