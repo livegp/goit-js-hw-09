@@ -63,7 +63,6 @@ function updateCountdown(ms) {
 function stopCountdown() {
     clearInterval(countdownTimer);
     Notiflix.Notify.info('Countdown finished!');
-    startBtn.disabled = false;
     input.disabled = false;
 }
 
